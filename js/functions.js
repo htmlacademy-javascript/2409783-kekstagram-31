@@ -1,5 +1,7 @@
 const isShort = (string, stringLength) => string.length <= stringLength;
 
+isShort('aba', 5);
+
 function isPalindrome (string) {
   const normalizedString = string.toLowerCase().replaceAll(' ', '');
   let reversedString = '';
@@ -8,6 +10,8 @@ function isPalindrome (string) {
   }
   return normalizedString === reversedString;
 }
+
+isPalindrome('aba');
 
 function findNumbers (string) {
   string = string.toString();
@@ -19,3 +23,5 @@ function findNumbers (string) {
   }
   return parseInt(result, 10);
 }
+
+findNumbers('a1.ba0');
