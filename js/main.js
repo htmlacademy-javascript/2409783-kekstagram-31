@@ -61,20 +61,24 @@ const getUniqueRandomInteger = (lower, upper) => {
   };
 };
 
+const getUniqueCommentId = getUniqueRandomInteger(1000, 2000);
+
 const createComment = () => {
-  const getUniqueId = getUniqueRandomInteger(1000, 2000);
+  const uniqueId = getUniqueCommentId();
 
   return {
-    id: getUniqueId(),
+    id: uniqueId,
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
     message: getRandomElement(MESSAGES),
     name: getRandomElement(NAMES),
   };
 };
 
+const getUniquePublicationId = getUniqueRandomInteger(1, PHOTO_AMOUNT);
+
 const createPublication = () => {
   const commentsNumber = getRandomInteger(MIN_COMMENT_AMOUNT, MAX_COMMENT_AMOUNT);
-  const uniqueId = getUniqueRandomInteger(1, PHOTO_AMOUNT)();
+  const uniqueId = getUniquePublicationId();
 
   return {
     id: uniqueId,
@@ -85,4 +89,4 @@ const createPublication = () => {
   };
 };
 
-createPublication();
+const publications = Array.from({length: PHOTO_AMOUNT}, createPublication);
