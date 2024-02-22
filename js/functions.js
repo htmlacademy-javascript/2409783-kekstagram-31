@@ -25,3 +25,22 @@ function findNumbers (string) {
 }
 
 findNumbers('a1.ba0');
+
+const toMinutes = (time) => {
+  let hours = Number(time.split(':')[0]);
+  let minutes = Number(time.split(':')[1]);
+  let result = hours * 60 + minutes;
+  return result;
+}
+
+const checkMeetingTime = (beginWork, endWork, beginMeeting, durationMeeting) => {
+  let beginWorkMinutes = toMinutes(beginWork);
+  let endWorkMinutes = toMinutes(endWork);
+  let beginMeetingMinutes = toMinutes(beginMeeting);
+  if (beginMeetingMinutes < beginWorkMinutes || beginMeetingMinutes + durationMeeting > endWorkMinutes) {
+    return false;
+  }
+  return true;
+}
+
+checkMeetingTime('08:00', '17:30', '10:00', 90);
