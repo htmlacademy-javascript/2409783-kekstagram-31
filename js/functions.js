@@ -25,3 +25,21 @@ function findNumbers (string) {
 }
 
 findNumbers('a1.ba0');
+
+const toMinutes = (time) => {
+  const hours = Number(time.split(':')[0]);
+  const minutes = Number(time.split(':')[1]);
+  return hours * 60 + minutes;
+};
+
+const checkMeetingTime = (beginWork, endWork, beginMeeting, durationMeeting) => {
+  const beginWorkMinutes = toMinutes(beginWork);
+  const endWorkMinutes = toMinutes(endWork);
+  const beginMeetingMinutes = toMinutes(beginMeeting);
+  if (beginMeetingMinutes < beginWorkMinutes || beginMeetingMinutes + durationMeeting > endWorkMinutes) {
+    return false;
+  }
+  return true;
+};
+
+checkMeetingTime('08:00', '17:30', '10:00', 90);
