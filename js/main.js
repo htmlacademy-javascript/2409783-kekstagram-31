@@ -1,3 +1,1 @@
-import {createPublications} from './data.js';
-
-createPublications();
+import './generate-pictures.js';
