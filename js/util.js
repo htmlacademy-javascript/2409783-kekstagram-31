@@ -23,4 +23,6 @@ const getUniqueRandomInteger = (lower, upper) => {
   };
 };
 
-export {getRandomInteger, getRandomElement, getUniqueRandomInteger};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomInteger, getRandomElement, getUniqueRandomInteger, isEscapeKey};
