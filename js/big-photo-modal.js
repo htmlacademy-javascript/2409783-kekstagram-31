@@ -11,12 +11,7 @@ const commentsLoader = bigPictureModal.querySelector('.social__comments-loader')
 
 const commentIncrement = 5;
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeBigPictureModal();
-  }
-};
+const eventListeners = [];
 
 const commentsCounter = () => {
   let counter = 0;
@@ -92,17 +87,20 @@ function openBigPictureModal (evt) {
 
     loadMoreComments(commentsNumber, commentsLength, bigPictureInfo);
 
-    const handleLoadMoreCommentsClick = () => {
+    eventListeners.handleLoadMoreCommentsClick = function () {
       loadMoreComments(commentsNumber, commentsLength, bigPictureInfo);
     };
 
-    commentsLoader.addEventListener('click', handleLoadMoreCommentsClick);
+    commentsLoader.addEventListener('click', eventListeners.handleLoadMoreCommentsClick);
 
-    modalCloseButton.addEventListener('click', () => {
-      commentsLoader.removeEventListener('click', handleLoadMoreCommentsClick);
-    }, {once: true});
+    eventListeners.onDocumentKeydown = function (keydownEvt) {
+      if (isEscapeKey(keydownEvt)) {
+        keydownEvt.preventDefault();
+        closeBigPictureModal();
+      }
+    };
 
-    document.addEventListener('keydown', onDocumentKeydown);
+    document.addEventListener('keydown', eventListeners.onDocumentKeydown);
 
     body.classList.add('modal-open');
   }
@@ -112,7 +110,8 @@ function closeBigPictureModal () {
   bigPictureModal.classList.add('hidden');
   clearComments();
 
-  document.removeEventListener('keydown', onDocumentKeydown);
+  commentsLoader.removeEventListener('click', eventListeners.handleLoadMoreCommentsClick);
+  document.removeEventListener('keydown', eventListeners.onDocumentKeydown);
 
   body.classList.remove('modal-open');
 }
