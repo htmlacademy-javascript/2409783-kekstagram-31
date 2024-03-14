@@ -11,7 +11,7 @@ const commentsLoader = bigPictureModal.querySelector('.social__comments-loader')
 
 const commentIncrement = 5;
 
-const eventListeners = [];
+const eventListeners = {};
 
 const commentsCounter = () => {
   let counter = 0;
