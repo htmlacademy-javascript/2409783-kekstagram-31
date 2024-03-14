@@ -9,7 +9,7 @@ const imageDescription = form.querySelector('.text__description');
 const uploadCloseButton = imageOverlay.querySelector('.img-upload__cancel');
 
 const onDocumentKeydown = function (keydownEvt) {
-  if (isEscapeKey(keydownEvt) && document.activeElement!==imageDescription && document.activeElement!==imageHashtags) {
+  if (isEscapeKey(keydownEvt) && document.activeElement !== imageDescription && document.activeElement !== imageHashtags) {
     keydownEvt.preventDefault();
     closeUploadImgModal();
   }
@@ -52,7 +52,7 @@ function validateHashtags (value) {
     return false;
   }
 
-  if (hashtagsList.length === 1 && hashtagsList[0]==='') {
+  if (hashtagsList.length === 1 && hashtagsList[0] === '') {
     return true;
   }
 
