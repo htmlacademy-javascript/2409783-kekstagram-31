@@ -1,4 +1,5 @@
 import {isEscapeKey} from './util.js';
+import {addScaleListeners, removeScaleListeners, addEffects, removeEffects} from './photo-editor.js';
 
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
@@ -14,18 +15,6 @@ const onDocumentKeydown = function (keydownEvt) {
     closeUploadImgModal();
   }
 };
-
-imageInput.addEventListener('input', () => {
-  imageOverlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
-});
-
-function closeUploadImgModal () {
-  document.removeEventListener('keydown', onDocumentKeydown);
-  imageOverlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-}
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -73,7 +62,6 @@ function validateHashtags (value) {
   }
 
   return true;
-
 }
 
 function createErrorMessage () {
@@ -93,5 +81,28 @@ form.addEventListener('submit', (evt) => {
     form.submit();
   }
 });
+
+imageInput.addEventListener('change', () => {
+  imageOverlay.classList.remove('hidden');
+  body.classList.add('modal-open');
+
+  addScaleListeners();
+  addEffects();
+
+  document.addEventListener('keydown', onDocumentKeydown);
+
+  pristine.validate();
+});
+
+function closeUploadImgModal () {
+  removeScaleListeners();
+  removeEffects();
+
+  document.removeEventListener('keydown', onDocumentKeydown);
+
+  imageOverlay.classList.add('hidden');
+  body.classList.remove('modal-open');
+  form.reset();
+}
 
 uploadCloseButton.addEventListener('click', closeUploadImgModal);
