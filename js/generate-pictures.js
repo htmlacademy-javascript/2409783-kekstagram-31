@@ -1,14 +1,19 @@
+import {getUniqueRandomInteger} from './util';
+
 const pictures = document.querySelector('.pictures');
 
 const publicationTemplate = document.querySelector('#picture').content;
 const publicationTemplateItem = publicationTemplate.querySelector('.picture');
 
+const filter = document.querySelector('.img-filters');
+const defaultFilter = filter.querySelector('#filter-default');
+const randomFilter = filter.querySelector('#filter-random');
+const discussedFilter = filter.querySelector('#filter-discussed');
+
 let publicationsList;
 
 const renderPublications = (publications) => {
   const publicationFragment = document.createDocumentFragment();
-
-  publicationsList = publications;
 
   publications.forEach(({id, url, description, likes, comments}) => {
     const publication = publicationTemplateItem.cloneNode(true);
@@ -20,7 +25,69 @@ const renderPublications = (publications) => {
     publicationFragment.appendChild(publication);
   });
 
+  pictures.innerHTML = '';
   pictures.appendChild(publicationFragment);
 };
 
-export{publicationsList, renderPublications};
+const comparePictures = (pictureA, pictureB) => {
+  const commentsA = pictureA.comments.length;
+  const commentsB = pictureB.comments.length;
+
+  return commentsB - commentsA;
+};
+
+const createFiltersHandlers = () => {
+  let activeFilter = defaultFilter;
+  let filteredPictures = [];
+
+  const handleDefaultFilter = () => {
+    activeFilter.classList.remove('img-filters__button--active');
+    defaultFilter.classList.add('img-filters__button--active');
+    activeFilter = defaultFilter;
+    renderPublications(publicationsList);
+  };
+
+  const handleRandomFilter = () => {
+    activeFilter.classList.remove('img-filters__button--active');
+    randomFilter.classList.add('img-filters__button--active');
+    activeFilter = randomFilter;
+    const index = getUniqueRandomInteger(0,24);
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = index();
+      filteredPictures.push(publicationsList[randomIndex]);
+    }
+    renderPublications(filteredPictures);
+    filteredPictures = [];
+  };
+
+  const handleDiscussedFilter = () => {
+    activeFilter.classList.remove('img-filters__button--active');
+    discussedFilter.classList.add('img-filters__button--active');
+    activeFilter = discussedFilter;
+    filteredPictures = publicationsList.slice().sort(comparePictures);
+    renderPublications(filteredPictures);
+    filteredPictures = [];
+  };
+
+  return {
+    handleDefaultFilter,
+    handleRandomFilter,
+    handleDiscussedFilter
+  };
+};
+
+const filterPublications = (publications) => {
+  filter.classList.remove('img-filters--inactive');
+  const filterHandlers = createFiltersHandlers();
+
+  publicationsList = publications;
+  renderPublications(publicationsList);
+
+  defaultFilter.addEventListener('click', filterHandlers.handleDefaultFilter);
+
+  randomFilter.addEventListener('click', filterHandlers.handleRandomFilter);
+
+  discussedFilter.addEventListener('click', filterHandlers.handleDiscussedFilter);
+};
+
+export{publicationsList, renderPublications, filterPublications};
