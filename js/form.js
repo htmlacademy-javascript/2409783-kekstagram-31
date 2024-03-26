@@ -104,7 +104,6 @@ function removeErrorListeners () {
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
-  successClass: 'img-upload__field-wrapper--success',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'div',
   errorTextClass: 'text__error'
@@ -119,14 +118,17 @@ pristine.addValidator(imageDescription, validateDescription, 'Длина ком�
 let errorType = 0;
 
 function validateHashtags (value) {
-  const hashtagsList = value.split(' ');
+  let hashtagsList = value.split(' ');
   const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
+
+  hashtagsList = hashtagsList.filter((hashtag) => hashtag !== '');
+
   if (hashtagsList.length > 5) {
     errorType = 1;
     return false;
   }
 
-  if (hashtagsList.length === 1 && hashtagsList[0] === '') {
+  if (hashtagsList.length === 0) {
     return true;
   }
 
@@ -165,6 +167,7 @@ const setUserFormSubmit = () => {
     const isValid = pristine.validate();
     if (isValid) {
       submitButton.disabled = true;
+      console.log(new FormData(evt.target));
       sendData(new FormData(evt.target))
         .then(() => {
           closeUploadImgModal();
