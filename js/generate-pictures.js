@@ -1,4 +1,4 @@
-import {getUniqueRandomInteger} from './util';
+import {debounce, getUniqueRandomInteger} from './util';
 
 const pictures = document.querySelector('.pictures');
 
@@ -11,6 +11,14 @@ const randomFilter = filter.querySelector('#filter-random');
 const discussedFilter = filter.querySelector('#filter-discussed');
 
 let publicationsList;
+
+const clearPublications = () => {
+  const picturesList = pictures.querySelectorAll('.picture');
+
+  for (let i = picturesList.length - 1; i >= 0; i--) {
+    pictures.removeChild(picturesList[i]);
+  }
+};
 
 const renderPublications = (publications) => {
   const publicationFragment = document.createDocumentFragment();
@@ -25,9 +33,11 @@ const renderPublications = (publications) => {
     publicationFragment.appendChild(publication);
   });
 
-  pictures.innerHTML = '';
+  clearPublications();
   pictures.appendChild(publicationFragment);
 };
+
+const renderPublicationsWithDebounce = debounce(renderPublications);
 
 const comparePictures = (pictureA, pictureB) => {
   const commentsA = pictureA.comments.length;
@@ -44,7 +54,7 @@ const createFiltersHandlers = () => {
     activeFilter.classList.remove('img-filters__button--active');
     defaultFilter.classList.add('img-filters__button--active');
     activeFilter = defaultFilter;
-    renderPublications(publicationsList);
+    renderPublicationsWithDebounce(publicationsList);
   };
 
   const handleRandomFilter = () => {
@@ -56,7 +66,7 @@ const createFiltersHandlers = () => {
       const randomIndex = index();
       filteredPictures.push(publicationsList[randomIndex]);
     }
-    renderPublications(filteredPictures);
+    renderPublicationsWithDebounce(filteredPictures);
     filteredPictures = [];
   };
 
@@ -65,7 +75,7 @@ const createFiltersHandlers = () => {
     discussedFilter.classList.add('img-filters__button--active');
     activeFilter = discussedFilter;
     filteredPictures = publicationsList.slice().sort(comparePictures);
-    renderPublications(filteredPictures);
+    renderPublicationsWithDebounce(filteredPictures);
     filteredPictures = [];
   };
 

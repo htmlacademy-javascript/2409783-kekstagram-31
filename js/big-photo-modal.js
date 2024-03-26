@@ -31,7 +31,7 @@ const renderComments = (commentsList) => {
     const commentImage = document.createElement('img');
     commentImage.classList.add('social__picture');
     commentImage.src = commentsList[i].avatar;
-    commentImage.alt = 'Аватар комментатора фотографии';
+    commentImage.alt = commentsList[i].name;
     commentImage.width = '35';
     commentImage.height = '35';
     newComment.appendChild(commentImage);

@@ -2,8 +2,11 @@ import {isEscapeKey} from './util.js';
 import {addScaleListeners, removeScaleListeners, addEffects, removeEffects} from './photo-editor.js';
 import {sendData} from './api.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
+const imagePreview = form.querySelector('.img-upload__preview');
 const imageInput = form.querySelector('.img-upload__input');
 const imageOverlay = form.querySelector('.img-upload__overlay');
 const imageHashtags = form.querySelector('.text__hashtags');
@@ -182,6 +185,14 @@ const setUserFormSubmit = () => {
 imageInput.addEventListener('change', () => {
   imageOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
+
+  const file = imageInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imagePreview.querySelector('img').src = URL.createObjectURL(file);
+  }
 
   addScaleListeners();
   addEffects();
