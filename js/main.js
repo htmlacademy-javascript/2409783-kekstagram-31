@@ -10,8 +10,8 @@ import {getData, errorShow} from './api.js';
 getData.then((publications) => {
   filterPublications(publications);
 })
-.catch(() => {
-  errorShow();
-});
+  .catch(() => {
+    errorShow();
+  });
 
 setUserFormSubmit();

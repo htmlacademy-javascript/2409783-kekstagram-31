@@ -3,11 +3,11 @@ const errorTemplate = document.querySelector('#data-error').content;
 
 const errorShow = () => {
   body.appendChild(errorTemplate);
-    setTimeout(() => {
-      const error = body.querySelector('.data-error');
-      body.removeChild(error);
-    }, 5000);
-}
+  setTimeout(() => {
+    const error = body.querySelector('.data-error');
+    body.removeChild(error);
+  }, 5000);
+};
 
 const getData = fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
   .then((response) => {

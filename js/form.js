@@ -212,8 +212,8 @@ function closeUploadImgModal () {
   body.classList.remove('modal-open');
   form.reset();
 
-  form.querySelectorAll('.text__error').forEach(error => error.remove());
-  form.querySelectorAll('.img-upload__field-wrapper').forEach(field => field.classList.remove('img-upload__field-wrapper--error'));
+  form.querySelectorAll('.text__error').forEach((error) => error.remove());
+  form.querySelectorAll('.img-upload__field-wrapper').forEach((field) => field.classList.remove('img-upload__field-wrapper--error'));
 }
 
 uploadCloseButton.addEventListener('click', closeUploadImgModal);
