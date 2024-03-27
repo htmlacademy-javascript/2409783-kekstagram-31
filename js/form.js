@@ -2,8 +2,11 @@ import {isEscapeKey} from './util.js';
 import {addScaleListeners, removeScaleListeners, addEffects, removeEffects} from './photo-editor.js';
 import {sendData} from './api.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
+const imagePreview = form.querySelector('.img-upload__preview');
 const imageInput = form.querySelector('.img-upload__input');
 const imageOverlay = form.querySelector('.img-upload__overlay');
 const imageHashtags = form.querySelector('.text__hashtags');
@@ -101,7 +104,6 @@ function removeErrorListeners () {
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
-  successClass: 'img-upload__field-wrapper--success',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'div',
   errorTextClass: 'text__error'
@@ -116,14 +118,17 @@ pristine.addValidator(imageDescription, validateDescription, 'Длина ком�
 let errorType = 0;
 
 function validateHashtags (value) {
-  const hashtagsList = value.split(' ');
+  let hashtagsList = value.split(' ');
   const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
+
+  hashtagsList = hashtagsList.filter((hashtag) => hashtag !== '');
+
   if (hashtagsList.length > 5) {
     errorType = 1;
     return false;
   }
 
-  if (hashtagsList.length === 1 && hashtagsList[0] === '') {
+  if (hashtagsList.length === 0) {
     return true;
   }
 
@@ -183,12 +188,18 @@ imageInput.addEventListener('change', () => {
   imageOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
 
+  const file = imageInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imagePreview.querySelector('img').src = URL.createObjectURL(file);
+  }
+
   addScaleListeners();
   addEffects();
 
   document.addEventListener('keydown', onDocumentKeydown);
-
-  pristine.validate();
 });
 
 function closeUploadImgModal () {
@@ -200,6 +211,9 @@ function closeUploadImgModal () {
   imageOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   form.reset();
+
+  form.querySelectorAll('.text__error').forEach((error) => error.remove());
+  form.querySelectorAll('.img-upload__field-wrapper').forEach((field) => field.classList.remove('img-upload__field-wrapper--error'));
 }
 
 uploadCloseButton.addEventListener('click', closeUploadImgModal);
