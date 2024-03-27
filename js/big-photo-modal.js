@@ -79,6 +79,7 @@ function openBigPictureModal (evt) {
     const bigPictureImage = bigPictureModal.querySelector('.big-picture__img');
     bigPictureImage.querySelector('img').src = bigPictureInfo.url;
     bigPictureImage.querySelector('img').alt = bigPictureInfo.description;
+    bigPictureModal.querySelector('.social__caption').textContent = bigPictureInfo.description;
     bigPictureModal.querySelector('.likes-count').textContent = bigPictureInfo.likes;
     bigPictureModal.querySelector('.social__comment-total-count').textContent = bigPictureInfo.comments.length;
 

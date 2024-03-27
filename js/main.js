@@ -4,11 +4,14 @@ import {setUserFormSubmit} from './form.js';
 import './photo-editor.js';
 
 import {filterPublications} from './generate-pictures.js';
-import {getData} from './api.js';
+import {getData, errorShow} from './api.js';
 
 
 getData.then((publications) => {
   filterPublications(publications);
+})
+.catch(() => {
+  errorShow();
 });
 
 setUserFormSubmit();

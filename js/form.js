@@ -167,7 +167,6 @@ const setUserFormSubmit = () => {
     const isValid = pristine.validate();
     if (isValid) {
       submitButton.disabled = true;
-      console.log(new FormData(evt.target));
       sendData(new FormData(evt.target))
         .then(() => {
           closeUploadImgModal();
@@ -201,8 +200,6 @@ imageInput.addEventListener('change', () => {
   addEffects();
 
   document.addEventListener('keydown', onDocumentKeydown);
-
-  pristine.validate();
 });
 
 function closeUploadImgModal () {
@@ -214,6 +211,9 @@ function closeUploadImgModal () {
   imageOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   form.reset();
+
+  form.querySelectorAll('.text__error').forEach(error => error.remove());
+  form.querySelectorAll('.img-upload__field-wrapper').forEach(field => field.classList.remove('img-upload__field-wrapper--error'));
 }
 
 uploadCloseButton.addEventListener('click', closeUploadImgModal);
