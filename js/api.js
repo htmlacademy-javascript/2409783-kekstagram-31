@@ -20,7 +20,7 @@ const sendData = (requestBody) => fetch(
   'https://31.javascript.htmlacademy.pro/kekstagram',
   {
     method: 'POST',
-    requestBody,
+    body: requestBody,
   })
   .then((response) => {
     if (!response.ok) {
