@@ -1,6 +1,7 @@
 const form = document.querySelector('.img-upload__form');
 
 const imagePreview = form.querySelector('.img-upload__preview');
+const image = imagePreview.querySelector('img');
 const imageScale = form.querySelector('.img-upload__scale');
 const scaleValue = imageScale.querySelector('.scale__control--value');
 const smallerScale = imageScale.querySelector('.scale__control--smaller');
@@ -28,7 +29,7 @@ function changeScale (step) {
   scaleValue.value = `${newScaleValue}%`;
   newScaleValue = newScaleValue / 100;
   newScaleValue = parseFloat(newScaleValue.toFixed(2));
-  imagePreview.style.transform = `scale(${newScaleValue})`;
+  image.style.transform = `scale(${newScaleValue})`;
 }
 
 function makeBiggerScale () {
@@ -41,7 +42,7 @@ function makeSmallerScale () {
 
 function addScaleListeners () {
   scaleValue.value = '100%';
-  imagePreview.style.transform = 'scale(1)';
+  image.style.transform = 'scale(1)';
   biggerScale.addEventListener('click', makeBiggerScale);
   smallerScale.addEventListener('click', makeSmallerScale);
 }
@@ -86,22 +87,22 @@ function changeEffect (effect, value) {
   const options = effectsOptions[effect];
   switch(effect) {
     case 'none':
-      imagePreview.style.filter = 'none';
+      image.style.filter = 'none';
       break;
     case 'chrome':
-      imagePreview.style.filter = `grayscale(${value}${options[3]})`;
+      image.style.filter = `grayscale(${value}${options[3]})`;
       break;
     case 'sepia':
-      imagePreview.style.filter = `sepia(${value}${options[3]})`;
+      image.style.filter = `sepia(${value}${options[3]})`;
       break;
     case 'marvin':
-      imagePreview.style.filter = `invert(${value}${options[3]})`;
+      image.style.filter = `invert(${value}${options[3]})`;
       break;
     case 'phobos':
-      imagePreview.style.filter = `blur(${value}${options[3]})`;
+      image.style.filter = `blur(${value}${options[3]})`;
       break;
     case 'heat':
-      imagePreview.style.filter = `brightness(${value}${options[3]})`;
+      image.style.filter = `brightness(${value}${options[3]})`;
       break;
   }
 }
