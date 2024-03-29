@@ -1,7 +1,21 @@
-const body = document.querySelector('body');
 const errorTemplate = document.querySelector('#data-error').content;
 
-const errorShow = () => {
+const BASE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
+const Route = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
+};
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+const ErrorText = {
+  GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу',
+  SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
+};
+
+const showError = () => {
+  const body = document.querySelector('body');
   body.appendChild(errorTemplate);
   setTimeout(() => {
     const error = body.querySelector('.data-error');
@@ -9,27 +23,20 @@ const errorShow = () => {
   }, 5000);
 };
 
-const getData = fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
-  .then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error(`${response.status} ${response.statusText}`);
-  });
+const request = async(url, errorText, method = Method.GET, body = null) => {
+  const response = await fetch(url, {method, body});
+  if (!response.ok) {
+    throw new Error(errorText);
+  }
+  return response.json();
+};
 
-const sendData = (requestBody) => fetch(
-  'https://31.javascript.htmlacademy.pro/kekstagram',
-  {
-    method: 'POST',
-    body: requestBody,
-  })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error();
-    }
-  })
-  .catch(() => {
-    throw new Error('Не удалось отправить форму. Попробуйте ещё раз');
-  });
+const sendData = async(requestBody) => request(
+  `${BASE_URL}${Route.SEND_DATA}`, ErrorText.SEND_DATA, Method.POST, requestBody
+);
 
-export {getData, sendData, errorShow};
+const getData = async() => request(
+  `${BASE_URL}${Route.GET_DATA}`, ErrorText.GET_DATA
+);
+
+export {getData, sendData, showError};

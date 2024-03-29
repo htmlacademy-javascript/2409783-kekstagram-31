@@ -20,7 +20,7 @@ const effectsOptions = {
   'heat': [0, 3, 0.1, ''],
 };
 
-function changeScale (step) {
+const changeScale = (step) => {
   const scaleValueNumber = Number(scaleValue.value.slice(0, -1));
   let newScaleValue = scaleValueNumber;
   if (scaleValueNumber + step <= 100 && scaleValueNumber + step >= 25) {
@@ -30,7 +30,7 @@ function changeScale (step) {
   newScaleValue = newScaleValue / 100;
   newScaleValue = parseFloat(newScaleValue.toFixed(2));
   image.style.transform = `scale(${newScaleValue})`;
-}
+};
 
 function makeBiggerScale () {
   return changeScale(25);
@@ -69,21 +69,7 @@ noUiSlider.create(effectSlider, {
   }
 });
 
-function updateEffectOptions (effect) {
-  const options = effectsOptions[effect];
-  effectSlider.noUiSlider.updateOptions({
-    range: {
-      min: options[0],
-      max: options[1]
-    },
-    start: options[1],
-    step: options[2]
-  });
-  effectValue.value = options[1];
-  changeEffect(effect, options[1]);
-}
-
-function changeEffect (effect, value) {
+const changeEffect = (effect, value) => {
   const options = effectsOptions[effect];
   switch(effect) {
     case 'none':
@@ -105,15 +91,29 @@ function changeEffect (effect, value) {
       image.style.filter = `brightness(${value}${options[3]})`;
       break;
   }
-}
+};
+
+const updateEffectOptions = (effect) => {
+  const options = effectsOptions[effect];
+  effectSlider.noUiSlider.updateOptions({
+    range: {
+      min: options[0],
+      max: options[1]
+    },
+    start: options[1],
+    step: options[2]
+  });
+  effectValue.value = options[1];
+  changeEffect(effect, options[1]);
+};
 
 let effectName;
 
-function init () {
+const init = () => {
   effectContainer.classList.add('visually-hidden');
   effectValue.value = '';
   changeEffect('none', 0);
-}
+};
 
 function handleSliderChange () {
   effectValue.value = effectSlider.noUiSlider.get();
