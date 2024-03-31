@@ -1,11 +1,11 @@
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
+const getRandomInteger = (firstNumber, secondNumber) => {
+  const lower = Math.ceil(Math.min(firstNumber, secondNumber));
+  const upper = Math.floor(Math.max(firstNumber, secondNumber));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
 
-const getRandomElement = (array) => array[getRandomInteger(0, array.length - 1)];
+const getRandomElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
 const getUniqueRandomInteger = (lower, upper) => {
   const previousValues = [];
@@ -25,13 +25,13 @@ const getUniqueRandomInteger = (lower, upper) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-function debounce (callback, timeoutDelay = 500) {
+const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 export {getRandomInteger, getRandomElement, getUniqueRandomInteger, isEscapeKey, debounce};

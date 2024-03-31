@@ -12,7 +12,7 @@ const imageHashtags = form.querySelector('.text__hashtags');
 const imageDescription = form.querySelector('.text__description');
 const uploadCloseButton = imageOverlay.querySelector('.img-upload__cancel');
 
-const onDocumentKeydown = function (keydownEvt) {
+const onDocumentKeydown = (keydownEvt) => {
   const errorMessage = body.querySelector('.error');
   if (isEscapeKey(keydownEvt) && document.activeElement !== imageDescription &&
       document.activeElement !== imageHashtags && !errorMessage) {
@@ -53,6 +53,8 @@ function closeUploadImgModal () {
   form.querySelectorAll('.img-upload__field-wrapper').forEach((field) => field.classList.remove('img-upload__field-wrapper--error'));
 }
 
-uploadCloseButton.addEventListener('click', closeUploadImgModal);
+const onCloseButtonClick = () => closeUploadImgModal();
+
+uploadCloseButton.addEventListener('click', onCloseButtonClick);
 
 export {closeUploadImgModal};

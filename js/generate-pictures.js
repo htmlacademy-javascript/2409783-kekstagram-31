@@ -46,18 +46,18 @@ const comparePictures = (pictureA, pictureB) => {
   return commentsB - commentsA;
 };
 
-const createFiltersHandlers = () => {
+const createFiltersListeners = () => {
   let activeFilter = defaultFilter;
   let filteredPictures = [];
 
-  const handleDefaultFilter = () => {
+  const onDefaultFilterClick = () => {
     activeFilter.classList.remove('img-filters__button--active');
     defaultFilter.classList.add('img-filters__button--active');
     activeFilter = defaultFilter;
     renderPublicationsWithDebounce(publicationsList);
   };
 
-  const handleRandomFilter = () => {
+  const onRandomFilterClick = () => {
     activeFilter.classList.remove('img-filters__button--active');
     randomFilter.classList.add('img-filters__button--active');
     activeFilter = randomFilter;
@@ -70,7 +70,7 @@ const createFiltersHandlers = () => {
     filteredPictures = [];
   };
 
-  const handleDiscussedFilter = () => {
+  const onDiscussedFilterClick = () => {
     activeFilter.classList.remove('img-filters__button--active');
     discussedFilter.classList.add('img-filters__button--active');
     activeFilter = discussedFilter;
@@ -80,24 +80,24 @@ const createFiltersHandlers = () => {
   };
 
   return {
-    handleDefaultFilter,
-    handleRandomFilter,
-    handleDiscussedFilter
+    onDefaultFilterClick,
+    onRandomFilterClick,
+    onDiscussedFilterClick
   };
 };
 
 const filterPublications = (publications) => {
   filter.classList.remove('img-filters--inactive');
-  const filterHandlers = createFiltersHandlers();
+  const filterListeners = createFiltersListeners();
 
   publicationsList = publications;
   renderPublications(publicationsList);
 
-  defaultFilter.addEventListener('click', filterHandlers.handleDefaultFilter);
+  defaultFilter.addEventListener('click', filterListeners.onDefaultFilterClick);
 
-  randomFilter.addEventListener('click', filterHandlers.handleRandomFilter);
+  randomFilter.addEventListener('click', filterListeners.onRandomFilterClick);
 
-  discussedFilter.addEventListener('click', filterHandlers.handleDiscussedFilter);
+  discussedFilter.addEventListener('click', filterListeners.onDiscussedFilterClick);
 };
 
 export{publicationsList, renderPublications, filterPublications};

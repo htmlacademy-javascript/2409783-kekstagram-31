@@ -51,7 +51,7 @@ const clearComments = () => {
   comments.innerHTML = '';
 };
 
-function loadMoreComments (commentsNumber, commentsLength, bigPictureInfo) {
+const loadMoreComments = (commentsNumber, commentsLength, bigPictureInfo) => {
   const newCommentsLength = commentsNumber(commentIncrement);
   if (commentsLength >= newCommentsLength) {
     shownComments.textContent = newCommentsLength;
@@ -66,9 +66,19 @@ function loadMoreComments (commentsNumber, commentsLength, bigPictureInfo) {
   if (commentsLength === newCommentsLength) {
     commentsLoader.classList.add('hidden');
   }
-}
+};
 
-function openBigPictureModal (evt) {
+const closeBigPictureModal = () => {
+  bigPictureModal.classList.add('hidden');
+  clearComments();
+
+  commentsLoader.removeEventListener('click', eventListeners.onLoaderClick);
+  document.removeEventListener('keydown', eventListeners.onDocumentKeydown);
+
+  body.classList.remove('modal-open');
+};
+
+const onPictureClick = (evt) => {
   if (evt.target.parentNode.nodeName === 'A') {
     bigPictureModal.classList.remove('hidden');
 
@@ -88,13 +98,13 @@ function openBigPictureModal (evt) {
 
     loadMoreComments(commentsNumber, commentsLength, bigPictureInfo);
 
-    eventListeners.handleLoadMoreCommentsClick = function () {
+    eventListeners.onLoaderClick = () => {
       loadMoreComments(commentsNumber, commentsLength, bigPictureInfo);
     };
 
-    commentsLoader.addEventListener('click', eventListeners.handleLoadMoreCommentsClick);
+    commentsLoader.addEventListener('click', eventListeners.onLoaderClick);
 
-    eventListeners.onDocumentKeydown = function (keydownEvt) {
+    eventListeners.onDocumentKeydown = (keydownEvt) => {
       if (isEscapeKey(keydownEvt)) {
         keydownEvt.preventDefault();
         closeBigPictureModal();
@@ -105,19 +115,11 @@ function openBigPictureModal (evt) {
 
     body.classList.add('modal-open');
   }
-}
+};
 
-function closeBigPictureModal () {
-  bigPictureModal.classList.add('hidden');
-  clearComments();
+const onCloseButtonClick = () => closeBigPictureModal();
 
-  commentsLoader.removeEventListener('click', eventListeners.handleLoadMoreCommentsClick);
-  document.removeEventListener('keydown', eventListeners.onDocumentKeydown);
+pictures.addEventListener('click', onPictureClick);
 
-  body.classList.remove('modal-open');
-}
-
-pictures.addEventListener('click', openBigPictureModal);
-
-modalCloseButton.addEventListener('click', closeBigPictureModal);
+modalCloseButton.addEventListener('click', onCloseButtonClick);
 
