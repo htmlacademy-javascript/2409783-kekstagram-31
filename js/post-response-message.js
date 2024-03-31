@@ -4,7 +4,7 @@ const body = document.querySelector('body');
 const successSubmition = document.querySelector('#success').content.querySelector('.success');
 const errorSubmition = document.querySelector('#error').content.querySelector('.error');
 
-const closeSuccessByClick = function (clickEvt) {
+const onDocumentSuccessClick = (clickEvt) => {
   const successMessage = body.querySelector('.success');
   const successInner = successMessage.querySelector('.success__inner');
   if (!clickEvt.composedPath().includes(successInner)) {
@@ -12,7 +12,7 @@ const closeSuccessByClick = function (clickEvt) {
   }
 };
 
-const closeErrorByClick = function (clickEvt) {
+const onDocumentErrorClick = (clickEvt) => {
   const errorMessage = body.querySelector('.error');
   const errorInner = errorMessage.querySelector('.error__inner');
   if (!clickEvt.composedPath().includes(errorInner)) {
@@ -20,45 +20,49 @@ const closeErrorByClick = function (clickEvt) {
   }
 };
 
-const closeSuccessByKeydown = function (keydownEvt) {
+const onDocumentSuccessKeydown = (keydownEvt) => {
   if (isEscapeKey(keydownEvt)) {
     removeSuccessListeners();
   }
 };
 
-const closeErrorByKeydown = function (keydownEvt) {
+const onDocumentErrorKeydown = (keydownEvt) => {
   if (isEscapeKey(keydownEvt)) {
     removeErrorListeners();
   }
 };
 
-const handleSuccessMessage = function () {
+const onSuccessButtonClick = () => removeSuccessListeners();
+
+const onErrorButtonClick = () => removeErrorListeners();
+
+const handleSuccessMessage = () => {
   body.appendChild(successSubmition);
   const successButton = body.querySelector('.success__button');
-  document.addEventListener('click', closeSuccessByClick);
-  document.addEventListener('keydown', closeSuccessByKeydown);
-  successButton.addEventListener('click', removeSuccessListeners);
+  document.addEventListener('click', onDocumentSuccessClick);
+  document.addEventListener('keydown', onDocumentSuccessKeydown);
+  successButton.addEventListener('click', onSuccessButtonClick);
 };
 
 function removeSuccessListeners () {
-  document.removeEventListener('click', closeSuccessByClick);
-  document.removeEventListener('keydown', closeSuccessByKeydown);
+  document.removeEventListener('click', onDocumentSuccessClick);
+  document.removeEventListener('keydown', onDocumentSuccessKeydown);
 
   const successMessage = body.querySelector('.success');
   successMessage.parentNode.removeChild(successMessage);
 }
 
-const handleErrorMessage = function () {
+const handleErrorMessage = () => {
   body.appendChild(errorSubmition);
   const errorButton = body.querySelector('.error__button');
-  document.addEventListener('click', closeErrorByClick);
-  document.addEventListener('keydown', closeErrorByKeydown);
-  errorButton.addEventListener('click', removeErrorListeners);
+  document.addEventListener('click', onDocumentErrorClick);
+  document.addEventListener('keydown', onDocumentErrorKeydown);
+  errorButton.addEventListener('click', onErrorButtonClick);
 };
 
 function removeErrorListeners () {
-  document.removeEventListener('click', closeErrorByClick);
-  document.removeEventListener('keydown', closeErrorByKeydown);
+  document.removeEventListener('click', onDocumentErrorClick);
+  document.removeEventListener('keydown', onDocumentErrorKeydown);
 
   const errorMessage = body.querySelector('.error');
   errorMessage.parentNode.removeChild(errorMessage);

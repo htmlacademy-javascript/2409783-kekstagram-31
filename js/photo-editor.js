@@ -12,6 +12,8 @@ const effectValue = effectContainer.querySelector('.effect-level__value');
 const effectSlider = effectContainer.querySelector('.effect-level__slider');
 const effectsList = form.querySelector('.effects__list');
 
+let effectName;
+
 const effectsOptions = {
   'chrome': [0, 1, 0.1, ''],
   'sepia': [0, 1, 0.1, ''],
@@ -32,25 +34,21 @@ const changeScale = (step) => {
   image.style.transform = `scale(${newScaleValue})`;
 };
 
-function makeBiggerScale () {
-  return changeScale(25);
-}
+const onBiggerScaleClick = () => changeScale(25);
 
-function makeSmallerScale () {
-  return changeScale(-25);
-}
+const onSmallerScaleClick = () => changeScale(-25);
 
-function addScaleListeners () {
+const addScaleListeners = () => {
   scaleValue.value = '100%';
   image.style.transform = 'scale(1)';
-  biggerScale.addEventListener('click', makeBiggerScale);
-  smallerScale.addEventListener('click', makeSmallerScale);
-}
+  biggerScale.addEventListener('click', onBiggerScaleClick);
+  smallerScale.addEventListener('click', onSmallerScaleClick);
+};
 
-function removeScaleListeners () {
-  biggerScale.removeEventListener('click', makeBiggerScale);
-  smallerScale.removeEventListener('click', makeSmallerScale);
-}
+const removeScaleListeners = () => {
+  biggerScale.removeEventListener('click', onBiggerScaleClick);
+  smallerScale.removeEventListener('click', onSmallerScaleClick);
+};
 
 noUiSlider.create(effectSlider, {
   range: {
@@ -107,40 +105,38 @@ const updateEffectOptions = (effect) => {
   changeEffect(effect, options[1]);
 };
 
-let effectName;
-
-const init = () => {
+const applyOriginalEffect = () => {
   effectContainer.classList.add('visually-hidden');
   effectValue.value = '';
   changeEffect('none', 0);
 };
 
-function handleSliderChange () {
+const onSliderChange = () => {
   effectValue.value = effectSlider.noUiSlider.get();
   changeEffect(effectName, effectValue.value);
-}
+};
 
-function handleRadioChange (evt) {
+const onRadioClick = (evt) => {
   if(evt.target.value){
     effectName = evt.target.value;
     if (effectName !== 'none') {
       effectContainer.classList.remove('visually-hidden');
       updateEffectOptions(effectName);
     } else {
-      init();
+      applyOriginalEffect();
     }
   }
-}
+};
 
-function addEffects () {
-  init();
-  effectsList.addEventListener('click', handleRadioChange);
-  effectSlider.noUiSlider.on('slide', handleSliderChange);
-}
+const addEffects = () => {
+  applyOriginalEffect();
+  effectsList.addEventListener('click', onRadioClick);
+  effectSlider.noUiSlider.on('slide', onSliderChange);
+};
 
-function removeEffects () {
-  effectsList.removeEventListener('click', handleRadioChange);
+const removeEffects = () => {
+  effectsList.removeEventListener('click', onRadioClick);
   effectSlider.noUiSlider.off();
-}
+};
 
 export {addScaleListeners, removeScaleListeners, addEffects, removeEffects};

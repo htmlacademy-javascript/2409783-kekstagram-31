@@ -15,15 +15,13 @@ const pristine = new Pristine(form, {
   errorTextClass: 'text__error'
 }, false);
 
-function validateDescription (value) {
-  return value.length <= 140;
-}
+const validateDescription = (value) => value.length <= 140;
 
 pristine.addValidator(imageDescription, validateDescription, 'Длина комментария не может превышать 140 символов.');
 
 let errorType = 0;
 
-function validateHashtags (value) {
+const validateHashtags = (value) => {
   let hashtagsList = value.split(' ');
   const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -55,15 +53,15 @@ function validateHashtags (value) {
   }
 
   return true;
-}
+};
 
-function createErrorMessage () {
+const createErrorMessage = () => {
   switch(errorType) {
     case 1: return 'Хэштегов должно быть менее 5 штук.';
     case 2: return 'Хэштег неправильного формата.';
     case 3: return 'Хэштеги должны быть уникальны.';
   }
-}
+};
 
 pristine.addValidator(imageHashtags, validateHashtags, createErrorMessage);
 
